@@ -1,19 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from '../styles/modules/todoItem.module.scss'
 import { getClasses } from '../utils/getClasses'
 import { format } from 'date-fns'
 import { MdDelete, MdEdit } from 'react-icons/md'
 import { useDispatch } from 'react-redux'
 import { deleteTodo } from '../slices/todoSlice'
+import toast from 'react-hot-toast'
+import TodoModal from './TodoModal'
 export default function TodoItem({ todo }) {
     const dispatch = useDispatch();
+    const [updateModalOpen, setUpdateModalOpen] = useState(false);
+    
     const handleDelete = () => {
         dispatch(deleteTodo(todo.id));
+        toast.success('Deleted successfully');
     }
     const handleUpdate = () => {
-
+        setUpdateModalOpen(true);
     }
   return (
+    <>
     <div className={styles.item}>
         <div className={styles.todoDetails}>
             []
@@ -33,5 +39,7 @@ export default function TodoItem({ todo }) {
             </div>
         </div>
     </div>
+    <TodoModal type="update" todo={todo} modalOpen={updateModalOpen} setModalOpen={setUpdateModalOpen}/>
+    </>
   )
 }
